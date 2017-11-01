@@ -45,13 +45,18 @@ public class KdTree {
             throw new IllegalArgumentException("Calls insert() with a null point");
 
         Node inputNode = new Node(p);
-        inputNode.rect = new RectHV(0, 0, 1, 1);
-        root = insert(root, inputNode, true);
+        double xmin = 0;
+        double ymin = 0;
+        double xmax = 1;
+        double ymax = 1;
+        
+        root = insert(root, inputNode, true, xmin, ymin, xmax, ymax);
     }
 
-    private Node insert(Node n, Node inputNode, boolean isEven) {
+    private Node insert(Node n, Node inputNode, boolean isEven, double xmin, double ymin, double xmax, double ymax) {
         if (n == null) {
             size++;
+            inputNode.rect = new RectHV(xmin, ymin, xmax, ymax);
             return inputNode;
         } else if (n.p.equals(inputNode.p)) {
             // return n but not change size since it is duplicate
@@ -62,22 +67,18 @@ public class KdTree {
             // root, go left;
             // otherwise go right
             if (inputNode.p.x() < n.p.x()) {
-                inputNode.rect = new RectHV(n.rect.xmin(), n.rect.ymin(), n.p.x(), n.rect.ymax());
-                n.lb = insert(n.lb, inputNode, !isEven);
+                n.lb = insert(n.lb, inputNode, !isEven, xmin, ymin, n.p.x(), ymax);
             } else {
-                inputNode.rect = new RectHV(n.p.x(), n.rect.ymin(), n.rect.xmax(), n.rect.ymax());
-                n.rt = insert(n.rt, inputNode, !isEven);
+                n.rt = insert(n.rt, inputNode, !isEven, n.p.x(), ymin, xmax, ymax);
             }
         } else {
             // if the point to be inserted has a smaller y-coordinate than the point in the
             // node, go left;
             // otherwise go right
             if (inputNode.p.y() < n.p.y()) {
-                inputNode.rect = new RectHV(n.rect.xmin(), n.rect.ymin(), n.rect.xmax(), n.p.y());
-                n.lb = insert(n.lb, inputNode, !isEven);
+                n.lb = insert(n.lb, inputNode, !isEven, xmin, ymin, xmax, n.p.y());
             } else {
-                inputNode.rect = new RectHV(n.rect.xmin(), n.p.y(), n.rect.xmax(), n.rect.ymax());
-                n.rt = insert(n.rt, inputNode, !isEven);
+                n.rt = insert(n.rt, inputNode, !isEven, xmin, n.p.y(), xmax, ymax);
             }
         }
         return n;
