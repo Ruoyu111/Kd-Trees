@@ -49,7 +49,7 @@ public class KdTree {
         double ymin = 0;
         double xmax = 1;
         double ymax = 1;
-        
+
         root = insert(root, inputNode, true, xmin, ymin, xmax, ymax);
     }
 
