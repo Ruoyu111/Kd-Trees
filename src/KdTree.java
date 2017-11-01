@@ -64,16 +64,20 @@ public class KdTree {
 			// if the point to be inserted has a smaller x-coordinate than the point at the root, go left; 
 			// otherwise go right
 			if (p.p.x() < n.p.x()) {
+				p.rect = new RectHV(n.rect.xmin(), n.rect.ymin(), n.p.x(), n.rect.ymax());
 				n.lb = insert(n.lb, p, !isEven);
 			} else {
+				p.rect = new RectHV(n.p.x(), n.rect.ymin(), n.rect.xmax(), n.rect.ymax());
 				n.rt = insert(n.rt, p, !isEven);
 			}
 		} else {
 			// if the point to be inserted has a smaller y-coordinate than the point in the node, go left; 
 			// otherwise go right
 			if (p.p.y() < n.p.y()) {
+				p.rect = new RectHV(n.rect.xmin(), n.rect.ymin(), n.rect.xmax(), n.p.y());
 				n.lb = insert(n.lb, p, !isEven);
 			} else {
+				p.rect = new RectHV(n.rect.xmin(), n.p.y(), n.rect.xmax(), n.rect.ymax());
 				n.rt = insert(n.rt, p, !isEven);
 			}
 		}
@@ -112,7 +116,9 @@ public class KdTree {
 	}
 
 	// draw all points to standard draw
-	public void draw() {} 
+	public void draw() {
+		
+	} 
 
 	// all points that are inside the rectangle (or on the boundary)
 //	public Iterable<Point2D> range(RectHV rect) {}              
@@ -129,5 +135,7 @@ public class KdTree {
 		System.out.println("tree p1 size: " + tree.size());
 		System.out.println("tree contains p1: " + tree.contains(p1));
 		System.out.println("tree contains new p1: " + tree.contains(new Point2D(0, 0.1)));
+		tree.insert(p1);
+		System.out.println("tree p1 size: " + tree.size());
 	}
 }
