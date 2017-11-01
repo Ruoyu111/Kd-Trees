@@ -74,7 +74,7 @@ public class PointSET {
 
         for (Point2D that : pointSet) {
             if (p.equals(that))
-                continue;
+                return that;
             double distance = p.distanceSquaredTo(that);
             if (minDistance > distance) {
                 minDistance = distance;
