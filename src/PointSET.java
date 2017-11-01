@@ -69,7 +69,7 @@ public class PointSET {
         if (p == null)
             throw new IllegalArgumentException("Input is null.");
 
-        double minDistance = 1.5;
+        double minDistance = 2;
         Point2D res = null;
 
         for (Point2D that : pointSet) {
